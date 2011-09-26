@@ -1,3 +1,23 @@
+# ba_utils.py (c) 2011 Phil Cote (cotejrp1)
+#
+# ***** BEGIN GPL LICENSE BLOCK *****
+#
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software Foundation,
+# Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# ***** END GPL LICENCE BLOCK *****
 """
 ba_utils.py
 A collection of short utilities that have proven useful on a number of
@@ -7,22 +27,27 @@ import bpy
 import re
 
 """
-MODULE SEARCH LAMBDAS
+MODULE SEARCH FUNCTIONS
 """
 
-"""
-fdir (filtered dir)
-does a filtered search of a module but with pattern filtering for
-the returned listings.
-"""
-fdir = lambda mod, patt : [ x for x in dir( mod ) 
-                                if re.match( patt, x, re.IGNORECASE ) ]
 
-"""
-nudir (no underscore dir)
-A dir command that omits everything that starts with an underscore.
-"""
-nudir = lambda mod : [ x for x in dir( mod ) if not x.startswith( "_" ) ]
+def fdir( mod, patt ):
+    """
+    fdir (filtered dir)
+    does a filtered search of a module but with pattern filtering for
+    the returned listings.
+    """
+    res = [ x for x in dir( mod ) if re.match( patt, x, re.IGNORECASE ) ]
+    return res
+    
+
+def nudir():
+    """
+    nudir (no underscore dir)
+    A dir command that omits everything that starts with an underscore.
+    """
+    res = [ x for x in dir( mod ) if not x.startswith( "_" ) ]
+    return res
 
 
 """
@@ -47,7 +72,8 @@ def clear_data_obs( *submods ):
     for submod in submods:
         d_obs = eval( "bpy.data." + submod )
         for ob in d_obs:
-            d_obs.remove( ob )
+            if ob.users == 0:
+                d_obs.remove( ob )
 
 
 """
