@@ -41,13 +41,12 @@ def fdir( mod, patt ):
     return res
     
 
-def nudir():
+def nudir( mod ):
     """
     nudir (no underscore dir)
     A dir command that omits everything that starts with an underscore.
     """
-    res = [ x for x in dir( mod ) if not x.startswith( "_" ) ]
-    return res
+    return [ x for x in dir( mod ) if not x.startswith( "_" ) ]
 
 
 """
@@ -67,7 +66,6 @@ def clear_data_obs( *submods ):
     """
     Clear out all the objects from the specified bpy.data modules.
     submods - a string list of the modules to have emptied.
-    TODO: This might be tweaked to take into account the users attribute.
     """    
     for submod in submods:
         d_obs = eval( "bpy.data." + submod )
